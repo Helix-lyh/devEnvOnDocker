@@ -4,7 +4,6 @@ services:
     build:
       context: ./mysql
       dockerfile: mysql.dockerfile
-      target: mysql_v8
     # 容器名称
     container_name: mysql_db
     # 路径(数据卷)映射
@@ -23,13 +22,13 @@ services:
     # command:
     # 日志参数
     logging:
-    driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      driver: "syslog"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
-      - frontend
+      - backend
     # 部署配置(docker-compose下无效)
     deploy:
       # 实例数量
@@ -51,7 +50,7 @@ services:
     image: postgres:12.0
     # 路径(数据卷)映射
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./postgreSQL:/var/lib/postgresql/data
     # 环境变量
     environment:
       POSTGRES_USER: root
@@ -60,26 +59,26 @@ services:
     # command:
     # 日志参数
     logging:
-    driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      driver: "syslog"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
       - frontend
     # 部署配置(docker-compose下无效)
     deploy:
-    # 实例数量
-    replicas: 1
-    # 更新配置
-    update_config:
-      # 每次更新数量
-      parallelism: 1
-      # 每次更新延时
-      delay: 5s
-    # 重启设定
-    restart_policy:
-      condition: on-failure
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
 
   mongo_db:
     # 容器名称
@@ -88,7 +87,7 @@ services:
     image: mongo:4.2.0-bionic
     # 路径(数据卷)映射
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./mongoDB/data/db:/data/db
     # 端口绑定
     ports:
       - "27017:27017"
@@ -101,12 +100,12 @@ services:
     # 日志参数
     logging:
       driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
-      - frontend
+      - backend
     # 部署配置(docker-compose下无效)
     deploy:
       # 实例数量
@@ -136,13 +135,13 @@ services:
     command: --requirepass 12345shangshandalaohu
     # 日志参数
     logging:
-    driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      driver: "syslog"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
-      - frontend
+      - backend
     # 部署配置(docker-compose下无效)
     deploy:
       # 实例数量
@@ -176,12 +175,12 @@ services:
     # 日志参数
     logging:
       driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
-      - frontend
+      - backend
     # 部署配置(docker-compose下无效)
     deploy:
       # 实例数量
@@ -198,9 +197,8 @@ services:
 
   nginx:
     build:
-    context: ./nginx
-    dockerfile: nginx.dockerfile
-    target: nginx_stable
+      context: ./nginx
+      dockerfile: nginx.dockerfile
     # 容器名称
     container_name: nginx
     # 路径(数据卷)映射
@@ -217,12 +215,12 @@ services:
     # 日志参数
     logging:
       driver: "syslog"
-    options:
-      max-size: "1024k"
-      max-file: "1"
+      options:
+        max-size: "1024k"
+        max-file: "1"
     # 网络配置
     networks:
-      - frontend
+      - backend
     # 部署配置(docker-compose下无效)
     deploy:
       # 实例数量
