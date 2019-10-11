@@ -1,0 +1,245 @@
+version: "3.7"
+services:
+  mysql_db:
+    build:
+      context: ./mysql
+      dockerfile: mysql.dockerfile
+      target: mysql_v8
+    # 容器名称
+    container_name: mysql_db
+    # 路径(数据卷)映射
+    volumes:
+      - ./mysql:/var/lib/mysql
+    # 端口绑定
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    # 环境变量
+    environment:
+      MYSQL_USER: customUser
+      MYSQL_PASSWORD: customUserPassword
+      MYSQL_ROOT_PASSWORD: superUserPassword
+    # 执行命令
+    # command:
+    # 日志参数
+    logging:
+    driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
+
+  postgres_db:
+    # 容器名称
+    container_name: postgres_db
+    # 镜像名称
+    image: postgres:12.0
+    # 路径(数据卷)映射
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    # 环境变量
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: superUserPassword
+    # 执行命令
+    # command:
+    # 日志参数
+    logging:
+    driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+    # 实例数量
+    replicas: 1
+    # 更新配置
+    update_config:
+      # 每次更新数量
+      parallelism: 1
+      # 每次更新延时
+      delay: 5s
+    # 重启设定
+    restart_policy:
+      condition: on-failure
+
+  mongo_db:
+    # 容器名称
+    container_name: mongo_db
+    # 镜像名称
+    image: mongo:4.2.0-bionic
+    # 路径(数据卷)映射
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    # 端口绑定
+    ports:
+      - "27017:27017"
+    # 环境变量
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: superUserPassword
+    # 执行命令
+    # command:
+    # 日志参数
+    logging:
+      driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    # 容器名称
+    container_name: redis
+    # 镜像名称
+    image: redis:5.0.6-buster
+    # 路径(数据卷)映射
+    volumes:
+      - ./redis/data:/data
+    # 端口绑定
+    ports:
+      - "6379"
+    # 执行命令
+    command: --requirepass 12345shangshandalaohu
+    # 日志参数
+    logging:
+    driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
+
+  rabbitmq:
+    # 容器名称
+    container_name: rabbitmq
+    # 镜像名称
+    image: rabbitmq:3.8.0-management
+    # 端口绑定
+    ports:
+      - "15671:15671"
+      - "15672:15672"
+    # 环境变量
+    environment:
+      RABBITMQ_LOG_BASE: ./logs/rabbitmq/
+      RABBITMQ_DEFAULT_USER: customUser
+      RABBITMQ_DEFAULT_PASS: customUserPassword
+    # 执行命令
+    # command:
+    # 日志参数
+    logging:
+      driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    build:
+    context: ./nginx
+    dockerfile: nginx.dockerfile
+    target: nginx_stable
+    # 容器名称
+    container_name: nginx
+    # 路径(数据卷)映射
+    volumes:
+      - ./nginx/:/usr/devEnvOnDocker/nginx/
+      - ./logs/:/usr/devEnvOnDocker/logs/
+      - ./nginx/config/:/etc/nginx/conf.d/
+      - ./pubFiles/webResource:/usr/web/static/
+    # 端口绑定
+    ports:
+      - "80:80"
+    # 执行命令
+    # command:
+    # 日志参数
+    logging:
+      driver: "syslog"
+    options:
+      max-size: "1024k"
+      max-file: "1"
+    # 网络配置
+    networks:
+      - frontend
+    # 部署配置(docker-compose下无效)
+    deploy:
+      # 实例数量
+      replicas: 1
+      # 更新配置
+      update_config:
+        # 每次更新数量
+        parallelism: 1
+        # 每次更新延时
+        delay: 5s
+      # 重启设定
+      restart_policy:
+        condition: on-failure
+
+# 网络模式
+networks:
+  frontend: 
+    driver: bridge
+  backend:
+    driver: bridge
