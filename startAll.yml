@@ -20,12 +20,6 @@ services:
       MYSQL_ROOT_PASSWORD: superUserPassword
     # 执行命令
     # command:
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - backend
@@ -50,19 +44,13 @@ services:
     image: postgres:12.0
     # 路径(数据卷)映射
     volumes:
-      - ./postgreSQL:/var/lib/postgresql/data
+      - ./postgreSQL/data:/var/lib/postgresql/data
     # 环境变量
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: superUserPassword
     # 执行命令
     # command:
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - frontend
@@ -97,12 +85,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: superUserPassword
     # 执行命令
     # command:
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - backend
@@ -133,12 +115,6 @@ services:
       - "6379"
     # 执行命令
     command: --requirepass 12345shangshandalaohu
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - backend
@@ -172,12 +148,6 @@ services:
       RABBITMQ_DEFAULT_PASS: customUserPassword
     # 执行命令
     # command:
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - backend
@@ -212,12 +182,6 @@ services:
       - "80:80"
     # 执行命令
     # command:
-    # 日志参数
-    logging:
-      driver: "syslog"
-      options:
-        max-size: "1024k"
-        max-file: "1"
     # 网络配置
     networks:
       - backend
@@ -234,7 +198,7 @@ services:
       # 重启设定
       restart_policy:
         condition: on-failure
-
+ 
 # 网络模式
 networks:
   frontend: 

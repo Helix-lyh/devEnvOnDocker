@@ -16,4 +16,4 @@ COPY setup.sh ./
 COPY privileges.sql ./
 
 #设置容器启动时执行的命令
-CMD ["sh", "/setup.sh"]
+CMD ["sh", "./setup.sh"]
