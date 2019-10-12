@@ -45,6 +45,9 @@ services:
     # 路径(数据卷)映射
     volumes:
       - ./postgreSQL/data:/var/lib/postgresql/data
+    # 端口绑定
+    ports:
+      - "5432:5432"
     # 环境变量
     environment:
       POSTGRES_USER: root
@@ -112,7 +115,7 @@ services:
       - ./redis/data:/data
     # 端口绑定
     ports:
-      - "6379"
+      - "6379:6379"
     # 执行命令
     command: --requirepass 12345shangshandalaohu
     # 网络配置
