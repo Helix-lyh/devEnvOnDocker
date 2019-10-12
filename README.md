@@ -13,13 +13,17 @@ docker-compose (官网方式):
 ```
 sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 ```
+3. 拉取代码至目标服务器
+```
+sudo git clone https://github.com/Helix-lyh/devEnvOnDocker.git && sudo chmod -R 777 devEnvOnDocker
+```
 
-3. 启动各中间件
+4. 启动各中间件
 ```
 cd devEnvOnDocker && sudo docker-compose -f startAll.yml up -d
 ```
 
-4. 各中间件 登录账号密码 及 mysql 配置(请自行修改startAll.yml实现定制!!!)
+5. 各中间件 登录账号密码 及 mysql 配置(请自行修改startAll.yml实现定制!!!)
 ```
 redis        redisPassword
 mysql        root / superUserPassword  customUser / customUserPassword
