@@ -41,9 +41,9 @@ ALTER user 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'superUse
 # 指定 customUser 用户权限(此为root权限) 同时指定可以在任意host登录
 grant all PRIVILEGES on *.* to customUser@'%' WITH GRANT OPTION;
 # 指定 customUser 用户的密码永不过期
-ALTER user 'customUser'@'%' IDENTIFIED BY 'customUserPasswprd' PASSWORD EXPIRE NEVER;
+ALTER user 'customUser'@'%' IDENTIFIED BY 'customUserPassword' PASSWORD EXPIRE NEVER;
 # 指定 customUser 用户 的密码验证方式为mysql_native_password (便于navicat等链接)
-ALTER user 'customUser'@'%' IDENTIFIED WITH mysql_native_password BY 'customUserPasswprd';
+ALTER user 'customUser'@'%' IDENTIFIED WITH mysql_native_password BY 'customUserPassword';
 # 刷新权限
 FLUSH PRIVILEGES;
 ```
