@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   mysql_db:
-    build:
-      context: ./mysql
-      dockerfile: mysql.dockerfile
     # 容器名称
     container_name: mysql_db
+    # 镜像名称
+    image: mysql:8.0.17
     # 路径(数据卷)映射
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/customCnf:/etc/mysql/conf.d
     # 端口绑定
     ports:
       - "3306:3306"
@@ -117,7 +117,7 @@ services:
     ports:
       - "6379:6379"
     # 执行命令
-    command: --requirepass 12345shangshandalaohu
+    command: --requirepass redisPassword
     # 网络配置
     networks:
       - backend
@@ -146,7 +146,6 @@ services:
       - "15672:15672"
     # 环境变量
     environment:
-      RABBITMQ_LOG_BASE: ./logs/rabbitmq/
       RABBITMQ_DEFAULT_USER: customUser
       RABBITMQ_DEFAULT_PASS: customUserPassword
     # 执行命令

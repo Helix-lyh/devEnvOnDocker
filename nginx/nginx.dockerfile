@@ -3,7 +3,7 @@ FROM nginx:stable
 MAINTAINER Tester_Helix<lymysql@163.com>
 
 # 指定挂载路径
-VOLUME ["/usr/devEnvOnDocker/nginx", "/etc/nginx/conf.d"]
+VOLUME ["/usr/devEnvOnDocker/nginx", ,"/usr/devEnvOnDocker/logs/", "/etc/nginx/conf.d"]
 
 # 修改时区配置
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \

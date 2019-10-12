@@ -4,17 +4,17 @@
 initFlag=0
 echo '执行mysql启动过程'
 echo '判断是否需要初始化Mysql...'
-if [ -f "./data/do_not_init" ]; then
+if [ -f "/var/lib/mysql/do_not_init" ]; then
     echo "找到 do_not_init 不执行初始化!"
 else
     echo '未找到 do_not_init!'
     echo '初始化Mysql...'
     # 初始化 mysql 并写 do_not_init 文件防止再次初始化 以及设置 initFlag
     mysqld  --initialize
-    touch ./data/do_not_init
+    touch /var/lib/mysql/do_not_init
     initFlag=1
     echo '从初始化日志中提取初始密码...'
-    logFiles=`find  ./data  -type f -regex  ".*\.\(err\)"`
+    logFiles=`find  /var/log/mysql/  -type f -regex  ".*\.\(err\)"`
     for file in $logFiles
     do
         # cut -f 11 -d " " 写法强依赖日志格式 如有错误需调整 
@@ -29,7 +29,7 @@ else
 fi
 
 echo '启动mysql....'
-service mysql start
+mysqld
 sleep 10
 if [ initFlag=1 ];then
     echo '检测到 initFlag=1 开始创建用户及授权....'
