@@ -15,6 +15,7 @@ services:
       - "33060:33060"
     # 环境变量
     environment:
+      TZ: Asia/Shanghai
       MYSQL_USER: customUser
       MYSQL_PASSWORD: customUserPassword
       MYSQL_ROOT_PASSWORD: superUserPassword
@@ -50,6 +51,7 @@ services:
       - "5432:5432"
     # 环境变量
     environment:
+      TZ: Asia/Shanghai
       POSTGRES_USER: root
       POSTGRES_PASSWORD: superUserPassword
     # 执行命令
@@ -84,6 +86,7 @@ services:
       - "27017:27017"
     # 环境变量
     environment:
+      TZ: Asia/Shanghai
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: superUserPassword
     # 执行命令
@@ -146,6 +149,7 @@ services:
       - "15672:15672"
     # 环境变量
     environment:
+      TZ: Asia/Shanghai
       RABBITMQ_DEFAULT_USER: customUser
       RABBITMQ_DEFAULT_PASS: customUserPassword
     # 执行命令
