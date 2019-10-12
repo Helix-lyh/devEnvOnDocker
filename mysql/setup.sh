@@ -4,17 +4,17 @@
 initFlag=0
 echo '执行mysql启动过程'
 echo '判断是否需要初始化Mysql...'
-if [ -f "./do_not_init" ]; then
+if [ -f "./data/do_not_init" ]; then
     echo "找到 do_not_init 不执行初始化!"
 else
     echo '未找到 do_not_init!'
     echo '初始化Mysql...'
     # 初始化 mysql 并写 do_not_init 文件防止再次初始化 以及设置 initFlag
     mysqld  --initialize
-    touch do_not_init
+    touch ./data/do_not_init
     initFlag=1
     echo '从初始化日志中提取初始密码...'
-    logFiles=`find  .  -type f -regex  ".*\.\(err\)"`
+    logFiles=`find  ./data  -type f -regex  ".*\.\(err\)"`
     for file in $logFiles
     do
         # cut -f 11 -d " " 写法强依赖日志格式 如有错误需调整 
